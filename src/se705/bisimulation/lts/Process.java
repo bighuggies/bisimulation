@@ -1,96 +1,101 @@
 package se705.bisimulation.lts;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class Process {
-	private HashMap<String, HashMap<String, Set<String>>> _transitions;
-	private String _name;
-	private Set<String> _states;
-	private Set<String> _actions;
-	private String _currentState;
+	private final String _name;
+	private Set<State> _states;
+	private final Set<String> _actions;
 
-	public Process(String processName) {
-		_name = processName;
-		_transitions = new HashMap<String, HashMap<String, Set<String>>>();
-		_states = new HashSet<String>();
-		_actions = new HashSet<String>();
+	private State _currentState;
+	private State _initialState;
+
+	public Process(final String processName) {
+		this._name = processName;
+		this._actions = new HashSet<String>();
 	}
 
-	public Process(String processName, String initialState) {
+	public Process(final String processName, final State initialState) {
 		this(processName);
 		this._currentState = initialState;
 	}
 
-	public Process addState(String state) {
-		this._states.add(state);
+	public Process addAction(final String action) {
+		this.getActions().add(action);
 		return this;
 	}
 
-	public Process addAction(String action) {
-		this._actions.add(action);
-		return this;
-	}
+	public Process addState(final String label) {
+		State newState = new State(label);
 
-	public Process addTransition(String source, String action,
-			String destination) {
-		if (!_transitions.containsKey(source)) {
-			this._transitions.put(source, new HashMap<String, Set<String>>());
+		if (this.getStates() == null) {
+			this._states = new HashSet<State>();
+			this._initialState = newState;
+			this._currentState = this._initialState;
 		}
 
-		HashMap<String, Set<String>> transitionsFromSource = _transitions
-				.get(source);
-
-		if (!transitionsFromSource.containsKey(action)) {
-			transitionsFromSource.put(action, new HashSet<String>());
-		}
-
-		transitionsFromSource.get(action).add(destination);
-
+		this.getStates().add(new State(label));
 		return this;
 	}
 
-	public Set<String> doAction(String action) {
-		return this._transitions.get(_currentState).get(action);
-	}
+	public Process addTransition(final String source, final String action, final String destination) {
+		State src = null, dest = null;
 
-	public Process setCurrentState(String state) {
-		if (!this._states.contains(state)) {
-			throw new IllegalArgumentException("State " + state
-					+ " does not exist in this process");
+		for (State s : this._states) {
+			if (s.getLabel().equalsIgnoreCase(source)) {
+				src = s;
+			}
 		}
 
-		this._currentState = state;
+		if (src == null) {
+			src = new State(source);
+		}
+
+		for (State d : this._states) {
+			if (d.getLabel().equalsIgnoreCase(destination)) {
+				dest = d;
+			}
+		}
+
+		if (dest == null) {
+			dest = new State(destination);
+		}
+
+		src.addTransition(action, dest);
 		return this;
+	}
+
+	public Set<String> getActions() {
+		return this._actions;
+	}
+
+	public State getCurrentState() {
+		return this._currentState;
+	}
+
+	public Set<State> getStates() {
+		return this._states;
+	}
+
+	public void setCurrentState(final State _currentState) {
+		this._currentState = _currentState;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 
 		b.append(this._name + ":\n");
 
 		b.append("\tStates: [");
-		for (String s : this._states) {
-			b.append(s + ", ");
+		for (final State s : this.getStates()) {
+			b.append(s.getLabel() + ", ");
 		}
 
 		b.append("]\n\tActions: [");
-		for (String s : this._actions) {
+		for (final String s : this.getActions()) {
 			b.append(s + ", ");
-		}
-
-		b.append("]\n\tTransitions: [");
-		for (Entry<String, HashMap<String, Set<String>>> x : this._transitions
-				.entrySet()) {
-			for (Entry<String, Set<String>> y : x.getValue().entrySet()) {
-				for (String z : y.getValue()) {
-					b.append("{ " + x.getKey() + " - " + y.getKey() + " -> "
-							+ z + " }, ");
-				}
-			}
 		}
 
 		return b.toString();

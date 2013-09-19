@@ -8,9 +8,11 @@ import se705.bisimulation.lts.Process;
 public class BisimulationRunner {
 
 	public static void main(String[] args) throws IOException {
-		Process a = InputParser.parse("/home/andrew/Code/bisimulation/process_p");
+		Process a = InputParser.parse("process_p");
+		Process b = InputParser.parse("process_q");
+		
 		System.out.println(a);
-//		Process b = InputParser.parse("process_b");
+		System.out.println(b);
 	}
 	
 	public boolean tap(Process a, Process b) {
