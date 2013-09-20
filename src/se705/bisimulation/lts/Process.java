@@ -5,20 +5,15 @@ import java.util.Set;
 
 public class Process {
 	private final String _name;
-	private Set<State> _states;
+	private final Set<String> _states;
 	private final Set<String> _actions;
-
-	private State _currentState;
-	private State _initialState;
+	private final Set<Transition> _transitions;
 
 	public Process(final String processName) {
 		this._name = processName;
+		this._states = new HashSet<String>();
 		this._actions = new HashSet<String>();
-	}
-
-	public Process(final String processName, final State initialState) {
-		this(processName);
-		this._currentState = initialState;
+		this._transitions = new HashSet<Transition>();
 	}
 
 	public Process addAction(final String action) {
@@ -26,43 +21,13 @@ public class Process {
 		return this;
 	}
 
-	public Process addState(final String label) {
-		State newState = new State(label);
-
-		if (this.getStates() == null) {
-			this._states = new HashSet<State>();
-			this._initialState = newState;
-			this._currentState = this._initialState;
-		}
-
-		this.getStates().add(new State(label));
+	public Process addState(final String state) {
+		this._states.add(state);
 		return this;
 	}
 
 	public Process addTransition(final String source, final String action, final String destination) {
-		State src = null, dest = null;
-
-		for (State s : this._states) {
-			if (s.getLabel().equalsIgnoreCase(source)) {
-				src = s;
-			}
-		}
-
-		if (src == null) {
-			src = new State(source);
-		}
-
-		for (State d : this._states) {
-			if (d.getLabel().equalsIgnoreCase(destination)) {
-				dest = d;
-			}
-		}
-
-		if (dest == null) {
-			dest = new State(destination);
-		}
-
-		src.addTransition(action, dest);
+		this._transitions.add(new Transition(source, action, destination));
 		return this;
 	}
 
@@ -70,17 +35,11 @@ public class Process {
 		return this._actions;
 	}
 
-	public State getCurrentState() {
-		return this._currentState;
-	}
-
-	public Set<State> getStates() {
+	public Set<String> getStates() {
 		return this._states;
 	}
 
-	public void setCurrentState(final State _currentState) {
-		this._currentState = _currentState;
-	}
+
 
 	@Override
 	public String toString() {
@@ -89,8 +48,8 @@ public class Process {
 		b.append(this._name + ":\n");
 
 		b.append("\tStates: [");
-		for (final State s : this.getStates()) {
-			b.append(s.getLabel() + ", ");
+		for (final String s : this.getStates()) {
+			b.append(s + ", ");
 		}
 
 		b.append("]\n\tActions: [");
@@ -98,6 +57,17 @@ public class Process {
 			b.append(s + ", ");
 		}
 
+		b.append("]\n\tTransitions: [");
+		for (final Transition t : this.getTransitions()) {
+			b.append(t.toString() + ", ");
+		}
+
+		b.append("]");
+
 		return b.toString();
+	}
+
+	public Set<Transition> getTransitions() {
+		return this._transitions;
 	}
 }

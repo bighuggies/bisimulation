@@ -4,11 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import se705.bisimulation.lts.Process;
-import se705.bisimulation.lts.State;
+import se705.bisimulation.lts.Transition;
 
 public class BisimilarComputation {
+	private HashSet<Set<String>> rho;
+	private final Set<Transition> ts;
+
 	public BisimilarComputation(final Process p, final Process q) {
-		HashSet<Set<State>> rhoinit = new HashSet<Set<State>>();
+		this.ts = new HashSet<Transition>();
+		this.ts.addAll(p.getTransitions());
+		this.ts.addAll(q.getTransitions());
+
+		Set<Set<String>> rhoinit = new HashSet<Set<String>>();
 		rhoinit.add(p.getStates());
 		rhoinit.add(q.getStates());
 
@@ -16,20 +23,20 @@ public class BisimilarComputation {
 		sigma.addAll(p.getActions());
 		sigma.addAll(q.getActions());
 
-		HashSet<Set<State>> rho = new HashSet<Set<State>>(rhoinit);
-		HashSet<Set<State>> waiting = new HashSet<Set<State>>(rhoinit);
+		Set<Set<String>> rho = new HashSet<Set<String>>(rhoinit);
+		Set<Set<String>> waiting = new HashSet<Set<String>>(rhoinit);
 
-		while(true) {
-			Set<State> pprime = this.popStates(waiting);
-			Set<Set<State>> matchP = new HashSet<Set<State>>();
+		while (true) {
+			Set<String> pprime = this.popStates(waiting);
+			Set<Set<String>> matchP = new HashSet<Set<String>>();
 
-			for(String action : sigma) {
-				for(Set<State> partition : rho) {
+			for (String action : sigma) {
+				for (Set<String> partition : rho) {
 					matchP.add(this.t(partition, pprime, action));
 				}
 
-				for (Set<State> partition: matchP) {
-					Set<Set<State>> splitP = this.splitP(partition, pprime, action);
+				for (Set<String> partition : matchP) {
+					Set<Set<String>> splitP = this.splitP(partition, pprime, action);
 
 					rho.remove(partition);
 					rho.addAll(splitP);
@@ -42,17 +49,21 @@ public class BisimilarComputation {
 		}
 	}
 
-	private Set<State> popStates(final HashSet<Set<State>> stateSets) {
-		Set<State> states = stateSets.iterator().next();
+	HashSet<Set<String>> getResult() {
+		return this.rho;
+	}
+
+	private Set<String> popStates(final Set<Set<String>> stateSets) {
+		Set<String> states = stateSets.iterator().next();
 		stateSets.remove(states);
 		return states;
 	}
 
-	private Set<Set<State>> splitP(final Set<State> partition, final Set<State> pprime, final String action) {
-		Set<Set<State>> splitP = new HashSet<Set<State>>();
+	private Set<Set<String>> splitP(final Set<String> partition, final Set<String> pprime, final String action) {
+		Set<Set<String>> splitP = new HashSet<Set<String>>();
 
-		Set<State> tap = this.t(partition, pprime, action);
-		Set<State> nottap = new HashSet<State>(partition);
+		Set<String> tap = this.t(partition, pprime, action);
+		Set<String> nottap = new HashSet<String>(partition);
 		nottap.removeAll(tap);
 
 		splitP.add(tap);
@@ -61,12 +72,14 @@ public class BisimilarComputation {
 		return splitP;
 	}
 
-	private Set<State> t(final Set<State> partition, final Set<State> pprime, final String action) {
-		Set<State> acc = new HashSet<State>();
+	private Set<String> t(final Set<String> partition, final Set<String> pprime, final String action) {
+		Set<String> acc = new HashSet<String>();
 
-		for (State s : partition) {
-			if (pprime.contains(s.doAction(action))) {
-				acc.add(s);
+		for (String s : partition) {
+			for (String d : pprime) {
+				if (this.ts.contains(new Transition(s, action, d))) {
+					acc.add(s);
+				}
 			}
 		}
 
