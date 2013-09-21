@@ -1,12 +1,16 @@
 Process P
 S = state(1),state(2),state(3),state(4)
 A = action(a),action(b)
-T = (state(1),action(a),state(2)),(state(2),action(b),state(3)),(state(3),action(b),state(4))
+T = (state(1),action(a),state(2)),(state(2),action(b),state(3)),(state(2),action(b),state(4))
 Process Q
 S = state(1),state(2),state(3),state(4),state(5),state(6),state(7)
 A = action(a),action(b),action(c)
 T = (state(1),action(a),state(2)),(state(1),action(a),state(3)),(state(2),action(b),state(4)),(state(2),action(c),state(5)),(state(3),action(b),state(6)),(state(3),action(c),state(7))
 Bisimulation Results
-
+state(1)
+state(2)
+state(1)
+state(2),state(3)
+state(6),state(5),state(7),state(4),state(3),state(4)
 Bisimulation Answer
-Yes
+No

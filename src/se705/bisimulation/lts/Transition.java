@@ -2,7 +2,7 @@ package se705.bisimulation.lts;
 
 import java.util.Arrays;
 
-public class Transition {
+public class Transition implements Comparable<Transition> {
 	public final String source;
 	public final String action;
 	public final String destination;
@@ -29,5 +29,10 @@ public class Transition {
 	@Override
 	public String toString() {
 		return String.format("(state(%s),action(%s),state(%s))", this.source.substring(1), this.action, this.destination.substring(1));
+	}
+
+	@Override
+	public int compareTo(final Transition o) {
+		return this.toString().compareTo(o.toString());
 	}
 }

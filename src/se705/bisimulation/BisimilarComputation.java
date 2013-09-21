@@ -11,7 +11,7 @@ import se705.bisimulation.util.StringUtil;
 public class BisimilarComputation {
 	private final Process processP;
 	private final Process processQ;
-	private final HashSet<Set<String>> rho;
+	private final Set<Set<String>> rho;
 	private final Set<Transition> ts;
 
 	public BisimilarComputation(final Process p, final Process q) {

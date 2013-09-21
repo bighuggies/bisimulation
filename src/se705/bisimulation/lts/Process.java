@@ -3,8 +3,8 @@ package se705.bisimulation.lts;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import se705.bisimulation.util.StringUtil;
 
@@ -16,9 +16,9 @@ public class Process {
 
 	public Process(final String processName) {
 		this._name = processName;
-		this._states = new HashSet<String>();
-		this._actions = new HashSet<String>();
-		this._transitions = new HashSet<Transition>();
+		this._states = new TreeSet<String>();
+		this._actions = new TreeSet<String>();
+		this._transitions = new TreeSet<Transition>();
 	}
 
 	public static Process parse(final String filePath, final String processName, final String prefix) throws IOException {
