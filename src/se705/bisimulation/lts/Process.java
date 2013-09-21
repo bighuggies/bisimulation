@@ -82,7 +82,6 @@ public class Process {
 		b.append("A = ");
 		b.append(StringUtil.join(StringUtil.wrapEach(this.getActions(), "action(%s)"), ",") + "\n");
 
-
 		b.append("T = ");
 		b.append(StringUtil.join(this.getTransitions(), ",") + "\n");
 

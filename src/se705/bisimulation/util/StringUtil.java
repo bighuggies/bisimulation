@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import se705.bisimulation.lts.Transition;
-
 public class StringUtil {
 	public static String join(final Iterable<? extends Object> elements, final CharSequence separator)
 	{
@@ -34,16 +32,6 @@ public class StringUtil {
 
 		for (String s : elements) {
 			out.add(String.format(formatString, s));
-		}
-
-		return out;
-	}
-
-	public static Iterable<String> wrapEachTransition(final Iterable<Transition> elements, final String formatString) {
-		Collection<String> out = new LinkedList<String>();
-
-		for (Transition t : elements) {
-			out.add(String.format(formatString, t.source, t.action, t.destination));
 		}
 
 		return out;
