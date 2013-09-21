@@ -21,33 +21,6 @@ public class Process {
 		this._transitions = new HashSet<Transition>();
 	}
 
-	public Process addAction(final String action) {
-		this.getActions().add(action);
-		return this;
-	}
-
-	public Process addState(final String state) {
-		this._states.add(state);
-		return this;
-	}
-
-	public Process addTransition(final String source, final String action, final String destination) {
-		this._transitions.add(new Transition(source, action, destination));
-		return this;
-	}
-
-	public Set<String> getActions() {
-		return this._actions;
-	}
-
-	public Set<String> getStates() {
-		return this._states;
-	}
-
-	public Set<Transition> getTransitions() {
-		return this._transitions;
-	}
-
 	public static Process parse(final String filePath, final String processName) throws IOException {
 		Process p = new Process(processName);
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -68,6 +41,33 @@ public class Process {
 		p.addTransition(line[0].trim(), line[1].trim(), line[2].trim());
 	}
 
+	private Process addAction(final String action) {
+		this.getActions().add(action);
+		return this;
+	}
+
+	private Process addState(final String state) {
+		this._states.add(state);
+		return this;
+	}
+
+	private Process addTransition(final String source, final String action, final String destination) {
+		this._transitions.add(new Transition(source, action, destination));
+		return this;
+	}
+
+
+	public Set<String> getActions() {
+		return this._actions;
+	}
+
+	public Set<String> getStates() {
+		return this._states;
+	}
+
+	public Set<Transition> getTransitions() {
+		return this._transitions;
+	}
 
 
 	@Override
