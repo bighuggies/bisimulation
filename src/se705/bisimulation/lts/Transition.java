@@ -28,6 +28,6 @@ public class Transition {
 
 	@Override
 	public String toString() {
-		return this.source + "-" + this.action + "->" + this.destination;
+		return String.format("(state(%s),action(%s),state(%s))", this.source, this.action, this.destination);
 	}
 }

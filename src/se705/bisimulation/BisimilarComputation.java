@@ -1,7 +1,5 @@
 package se705.bisimulation;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -131,11 +129,7 @@ public class BisimilarComputation {
 		out.append("Bisimulation Results\n");
 
 		for (Set<String> partition : this.rho) {
-			Collection<String> stateLabels = new ArrayList<String>();
-			for (String state : partition) {
-				stateLabels.add(String.format("state(%s)", state));
-			}
-			out.append(StringUtil.join(stateLabels, ",") + "\n");
+			out.append(StringUtil.join(StringUtil.wrapEach(partition, "state(%s)"), ",") + "\n");
 		}
 
 		out.append("Bisimulation Answer\n");

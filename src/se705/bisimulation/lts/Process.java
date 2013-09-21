@@ -3,8 +3,6 @@ package se705.bisimulation.lts;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -79,26 +77,14 @@ public class Process {
 		b.append(this._name + "\n");
 
 		b.append("S = ");
-		Collection<String> stateLabels = new ArrayList<String>();
-		for (final String s : this.getStates()) {
-			stateLabels.add(String.format("state(%s)", s));
-		}
-		b.append(StringUtil.join(stateLabels, ",") + "\n");
+		b.append(StringUtil.join(StringUtil.wrapEach(this.getStates(), "state(%s)"), ",") + "\n");
 
 		b.append("A = ");
-		Collection<String> actionLabels = new ArrayList<String>();
-		for (final String a : this.getActions()) {
-			actionLabels.add(String.format("action(%s)", a));
-		}
-		b.append(StringUtil.join(actionLabels, ",") + "\n");
+		b.append(StringUtil.join(StringUtil.wrapEach(this.getActions(), "action(%s)"), ",") + "\n");
 
 
 		b.append("T = ");
-		Collection<String> transitionLabels = new ArrayList<String>();
-		for (final Transition t : this.getTransitions()) {
-			transitionLabels.add(String.format("(state(%s),action(%s),state(%s))", t.source, t.action, t.destination));
-		}
-		b.append(StringUtil.join(transitionLabels, ",") + "\n");
+		b.append(StringUtil.join(this.getTransitions(), ",") + "\n");
 
 		return b.toString();
 	}
