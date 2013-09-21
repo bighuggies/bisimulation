@@ -129,7 +129,7 @@ public class BisimilarComputation {
 		out.append("Bisimulation Results\n");
 
 		for (Set<String> partition : this.rho) {
-			out.append(StringUtil.join(StringUtil.wrapEach(partition, "state(%s)"), ",") + "\n");
+			out.append(StringUtil.join(StringUtil.wrapEach(StringUtil.removePrefixEach(partition), "state(%s)"), ",") + "\n");
 		}
 
 		out.append("Bisimulation Answer\n");

@@ -47,8 +47,8 @@ public class BisimulationChecker {
 	 */
 	public void readInput(final String fileP, final String fileQ) {
 		try {
-			this.processP = Process.parse(fileP, "Process P");
-			this.processQ = Process.parse(fileQ, "Process Q");
+			this.processP = Process.parse(fileP, "Process P", "p");
+			this.processQ = Process.parse(fileQ, "Process Q", "q");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

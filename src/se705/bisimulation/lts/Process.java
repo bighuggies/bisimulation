@@ -21,24 +21,25 @@ public class Process {
 		this._transitions = new HashSet<Transition>();
 	}
 
-	public static Process parse(final String filePath, final String processName) throws IOException {
+	public static Process parse(final String filePath, final String processName, final String prefix) throws IOException {
 		Process p = new Process(processName);
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
 		String line;
 		while (!(line = reader.readLine()).equalsIgnoreCase("!")) {
 			String[] parts = line.split(",|:");
-			Process.putLineInProcess(p, parts);
+			Process.putLineInProcess(p, parts, prefix);
 		}
 
 		reader.close();
 		return p;
 	}
 
-	private static void putLineInProcess(final Process p, final String[] line) {
-		p.addState(line[0].trim());
+	private static void putLineInProcess(final Process p, final String[] line, final String prefix) {
+		p.addState(prefix + line[0].trim());
+		p.addState(prefix + line[2].trim());
 		p.addAction(line[1].trim());
-		p.addTransition(line[0].trim(), line[1].trim(), line[2].trim());
+		p.addTransition(prefix + line[0].trim(), line[1].trim(), prefix + line[2].trim());
 	}
 
 	private Process addAction(final String action) {
@@ -77,7 +78,7 @@ public class Process {
 		b.append(this._name + "\n");
 
 		b.append("S = ");
-		b.append(StringUtil.join(StringUtil.wrapEach(this.getStates(), "state(%s)"), ",") + "\n");
+		b.append(StringUtil.join(StringUtil.wrapEach(StringUtil.removePrefixEach(this.getStates()), "state(%s)"), ",") + "\n");
 
 		b.append("A = ");
 		b.append(StringUtil.join(StringUtil.wrapEach(this.getActions(), "action(%s)"), ",") + "\n");

@@ -1,0 +1,11 @@
+Process P
+S = state(1),state(2),state(3)
+A = action(a),action(b)
+T = (state(1),action(a),state(1)),(state(1),action(b),state(1)),(state(2),action(a),state(2))
+Process Q
+S = state(1),state(2),state(3)
+A = action(a),action(b)
+T = (state(1),action(a),state(1)),(state(1),action(b),state(1)),(state(2),action(a),state(2))
+Bisimulation Results
+Bisimulation Answer
+Yes
